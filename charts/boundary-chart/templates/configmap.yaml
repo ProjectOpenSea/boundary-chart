@@ -8,7 +8,6 @@ metadata:
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  creationTimestamp: null
 data:
   boundary-config-admin.hcl: |
     disable_mlock = true
@@ -20,7 +19,7 @@ data:
       {{- if .Values.vault.enabled }}
         url = "file:///vault/secrets/database-creds-admin.txt"
       {{- else }}
-        url = "postgresql://{{.Values.database.username}}:{{.Values.database.password}}@{{ .Values.database.url }}:{{ .Values.database.port}}/{{.Values.database.dbName}}{{- if ne .Values.database.ssl true }}?sslmode=disable{{- end }}"
+        url = "postgresql://{{.Values.database.username}}@{{ .Values.database.url }}:{{ .Values.database.port}}/{{.Values.database.dbName}}{{- if ne .Values.database.ssl true }}?sslmode=disable{{- end }}"
       {{- end }}
       }
       public_cluster_addr = "localhost"
