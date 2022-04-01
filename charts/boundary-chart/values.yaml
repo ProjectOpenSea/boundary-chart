@@ -33,7 +33,7 @@ aead:
     worker-auth: 8Aj2j2JpFmY1WdjKcmETyYwUi7njP74MLVXWNov4rZ8=
 
 vault:
-  enabled: true
+  enabled: false
   # Use form `protocol://fqdn:port`
   fqdn: https://vault:443
   mountPath: local-kms
@@ -64,8 +64,7 @@ serviceAccount:
 podAnnotations: {}
 
 podSecrets:
-  - secretName: vault-secret
-    keyName: VAULT_TOKEN
+
 
 podSecurityContext: {}
   # fsGroup: 2000
