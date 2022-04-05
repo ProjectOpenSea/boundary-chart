@@ -16,11 +16,7 @@ data:
       name        = "kubernetes-controller"
       description = "Boundary controller"
       database {
-      {{- if .Values.vault.enabled }}
-        url = "file:///vault/secrets/database-creds-admin.txt"
-      {{- else }}
-        url = "postgresql://{{.Values.database.username}}@{{ .Values.database.url }}:{{ .Values.database.port}}/{{.Values.database.dbName}}{{- if ne .Values.database.ssl true }}?sslmode=disable{{- end }}"
-      {{- end }}
+      url = "postgresql://{{.Values.database.username}}@{{ .Values.database.url }}:{{ .Values.database.port}}/{{.Values.database.dbName}}{{- if ne .Values.database.ssl true }}?sslmode=disable{{- end }}"
       }
       public_cluster_addr = "localhost"
     }
@@ -46,33 +42,22 @@ data:
       purpose     = "proxy"
       tls_disable = true
     }
-    {{- if .Values.vault.enabled }}
-    {{- $fqdn := .Values.vault.fqdn }}
-    {{- $mountPath := .Values.vault.mountPath }}
-    {{- $tlsSkip := .Values.vault.tlsSkipVerify }}
-    {{- range $i, $purpose := list "root" "recovery" "worker-auth" }}
-    kms "transit" {
-      purpose         = "{{ $purpose }}"
-      address         = "{{ $fqdn }}"
-      disable_renewal = false
-
-      key_name   = "{{ $purpose }}"
-      mount_path = "{{ $mountPath }}"
-      {{- if $tlsSkip }}
-      tls_skip_verify = true
-      {{- end }}
+    kms "awskms" {
+      purpose    = "root"
+      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
     }
-    {{- end }}
-    {{- else }}
-    {{- range $purpose, $key := .Values.aead.keys }}
-    kms "aead" {
-      purpose = "{{ $purpose }}"
-      key_id = "global_{{ $purpose }}"
-      aead_type = "aes-gcm"
-      key = "{{ $key }}"
+    kms "awskms" {
+      purpose    = "recovery"
+      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
     }
-    {{- end }}
-    {{- end }}
+    kms "awskms" {
+      purpose    = "worker-auth"
+      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+    }
+    kms "awskms" {
+      purpose    = "config"
+      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+    }
   boundary-config.hcl: |
     disable_mlock = true
     log_format    = "standard"
@@ -80,11 +65,7 @@ data:
       name        = "kubernetes-controller"
       description = "Boundary controller"
       database {
-      {{- if .Values.vault.enabled }}
-        url = "file:///vault/secrets/database-creds.txt"
-      {{- else }}
-        url = "postgresql://{{.Values.database.username}}:{{.Values.database.password}}@{{ .Values.database.url }}:{{ .Values.database.port}}/{{.Values.database.dbName}}{{- if ne .Values.database.ssl true }}?sslmode=disable{{- end }}"
-      {{- end }}
+      url = "postgresql://{{.Values.database.username}}:{{.Values.database.password}}@{{ .Values.database.url }}:{{ .Values.database.port}}/{{.Values.database.dbName}}{{- if ne .Values.database.ssl true }}?sslmode=disable{{- end }}"
       }
       public_cluster_addr = "localhost"
     }
@@ -110,30 +91,19 @@ data:
       purpose     = "proxy"
       tls_disable = true
     }
-    {{- if .Values.vault.enabled }}
-    {{- $fqdn := .Values.vault.fqdn }}
-    {{- $mountPath := .Values.vault.mountPath }}
-    {{- $tlsSkip := .Values.vault.tlsSkipVerify }}
-    {{- range $i, $purpose := list "root" "recovery" "worker-auth" }}
-    kms "transit" {
-      purpose         = "{{ $purpose }}"
-      address         = "{{ $fqdn }}"
-      disable_renewal = false
-
-      key_name   = "{{ $purpose }}"
-      mount_path = "{{ $mountPath }}"
-      {{- if $tlsSkip }}
-      tls_skip_verify = true
-      {{- end }}
+    kms "awskms" {
+      purpose    = "root"
+      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
     }
-    {{- end }}
-    {{- else }}
-    {{- range $purpose, $key := .Values.aead.keys }}
-    kms "aead" {
-      purpose = "{{ $purpose }}"
-      key_id = "global_{{ $purpose }}"
-      aead_type = "aes-gcm"
-      key = "{{ $key }}"
+    kms "awskms" {
+      purpose    = "recovery"
+      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
     }
-    {{- end }}
-    {{- end }}
+    kms "awskms" {
+      purpose    = "worker-auth"
+      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+    }
+    kms "awskms" {
+      purpose    = "config"
+      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+    }

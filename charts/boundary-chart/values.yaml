@@ -26,7 +26,7 @@ database:
   password: postgres
 
 aead:
-  enabled: true
+  enabled: false
   keys:
     root: D0vmvzf8l+C709nVfEH3hgBCj6IF/1eb9kCTYTtnDVc=
     recovery: Ivj8Si8UQBp+Zm2lLbUDTxOGikE8rSo6QihCjWSTXqY=
@@ -90,13 +90,13 @@ service:
         number: 9202
 
 ingress:
-  enabled: false
+  enabled: true
   className: nginx
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: boundary.home.lan
+    - host: boundary.openseabeta.com
       paths:
         - path: /
           pathType: ImplementationSpecific
