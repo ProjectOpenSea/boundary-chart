@@ -16,7 +16,7 @@ data:
       name        = "kubernetes-controller"
       description = "Boundary controller"
       database {
-      url = "postgresql://{{.Values.database.username}}@{{ .Values.database.url }}:{{ .Values.database.port}}/{{.Values.database.dbName}}{{- if ne .Values.database.ssl true }}?sslmode=disable{{- end }}"
+        url = "postgresql://{{ .Values.database.url }}/{{.Values.database.dbName}}{{- if ne .Values.database.ssl true }}?sslmode=disable{{- end }}"
       }
       public_cluster_addr = "localhost"
     }
@@ -44,19 +44,19 @@ data:
     }
     kms "awskms" {
       purpose    = "root"
-      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+      kms_key_id = {{ .Values.kms.keyId | quote }}
     }
     kms "awskms" {
       purpose    = "recovery"
-      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+      kms_key_id = {{ .Values.kms.keyId | quote }}
     }
     kms "awskms" {
       purpose    = "worker-auth"
-      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+      kms_key_id = {{ .Values.kms.keyId | quote }}
     }
     kms "awskms" {
       purpose    = "config"
-      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+      kms_key_id = {{ .Values.kms.keyId | quote }}
     }
   boundary-config.hcl: |
     disable_mlock = true
@@ -65,7 +65,7 @@ data:
       name        = "kubernetes-controller"
       description = "Boundary controller"
       database {
-      url = "postgresql://{{.Values.database.username}}:{{.Values.database.password}}@{{ .Values.database.url }}:{{ .Values.database.port}}/{{.Values.database.dbName}}{{- if ne .Values.database.ssl true }}?sslmode=disable{{- end }}"
+        url = "postgresql://{{ .Values.database.url }}/{{.Values.database.dbName}}{{- if ne .Values.database.ssl true }}?sslmode=disable{{- end }}"
       }
       public_cluster_addr = "localhost"
     }
@@ -93,17 +93,17 @@ data:
     }
     kms "awskms" {
       purpose    = "root"
-      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+      kms_key_id = {{ .Values.kms.keyId | quote }}
     }
     kms "awskms" {
       purpose    = "recovery"
-      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+      kms_key_id = {{ .Values.kms.keyId | quote }}
     }
     kms "awskms" {
       purpose    = "worker-auth"
-      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+      kms_key_id = {{ .Values.kms.keyId | quote }}
     }
     kms "awskms" {
       purpose    = "config"
-      kms_key_id = "77a1d61f-3507-4314-bb7f-a84b82722fc3"
+      kms_key_id = {{ .Values.kms.keyId | quote }}
     }

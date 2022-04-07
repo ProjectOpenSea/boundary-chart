@@ -64,6 +64,8 @@ spec:
               value: boundary
             - name: PGPASSWORD
               value: postgres
+            - name: PGUSER
+              value: postgres
             {{- range .Values.podSecrets }}
             - name: {{ .keyName }}
               valueFrom:
@@ -85,6 +87,10 @@ spec:
           env:
             - name: HOSTNAME
               value: boundary
+            - name: PGPASSWORD
+              value: postgres
+            - name: PGUSER
+              value: postgres
             {{- range .Values.podSecrets }}
             - name: {{ .keyName }}
               valueFrom:

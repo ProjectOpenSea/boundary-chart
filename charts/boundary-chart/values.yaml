@@ -22,8 +22,9 @@ database:
   port: 5432
   dbName: postgres
   ssl: false
-  username: postgres
-  password: postgres
+
+kms:
+  keyId: 12666633-63bd-477a-b874-347e22977603
 
 aead:
   enabled: false
@@ -100,11 +101,11 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-          port: api
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+          port: 9200
+  tls:
+    - secretName: openseabeta-com-tls
+      hosts:
+        - boundary.openseabeta.com
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
